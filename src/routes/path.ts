@@ -7,8 +7,18 @@ const protectedRoutes = [
     protected: true,
   },
   {
+    path: "/cart",
+    element: lazy(() => import("../pages/cart/Cart")),
+    protected: true,
+  },
+  {
     path: "/products",
     element: lazy(() => import("../pages/products/Product")),
+    protected: true,
+  },
+  {
+    path: "/add-product",
+    element: lazy(() => import("../pages/products/AddProduct")),
     protected: true,
   },
   {

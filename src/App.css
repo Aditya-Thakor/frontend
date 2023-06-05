@@ -5,7 +5,7 @@
 .section {
   margin: 0;
   align-items: center;
-  width: 500px;
+  width: 1500px;
 }
 h1 {
   display: block;
@@ -39,3 +39,21 @@ h1 {
   width: 99%;
   gap: 20px;
 }
+
+.qty-field {
+  width: 100px;
+  padding: 10px;
+}
+
+.total-amount {
+  margin: 10px 0px 0px;
+  padding: 10px;
+  background-color: #04aa6d;
+  color: white;
+  text-align: center;
+}
+.total-amount:hover {
+  background-color: blue;
+}
+
+/* Products  */

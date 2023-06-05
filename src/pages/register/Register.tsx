@@ -4,29 +4,30 @@ import FormInputs from "../../component/FormInputs";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Button, Form } from "antd";
 import { addUser, fetchEmail } from "../../axios/userApi.js";
+import FormInput from "../../component/FormInput.js";
 
 const Register: any = () => {
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm();
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const { email } = data;
+  const [form] = Form.useForm();
+
+  // const yupSync = {
+  //   async validator({ field }, value) {
+  //     await registerSchema.validateSyncAt(field, { [field]: value });
+  //   },
+  // };
+
+  const onFinish = async (value: any) => {
+    const { email } = value;
     const resEmail = await fetchEmail(email);
 
+    console.log(resEmail);
+
     if (resEmail) {
-      const response = await addUser(data);
+      const response = await addUser(value);
       if (response) navigate("/login");
     } else {
-      setError(
-        "email",
-        { type: "custom", message: "Already Register" },
-        { shouldFocus: true }
-      );
+      form.setFields([{ name: "email", errors: ["email already used"] }]);
     }
   };
 
@@ -38,21 +39,27 @@ const Register: any = () => {
       <div className="component">
         <div className="section">
           <h1>REGISTER</h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              {registerField.map((field: any, i: number) => (
-                <div key={i}>
-                  <FormInputs register={register} errors={errors} {...field} />
-                </div>
-              ))}
-            </div>
-
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Form
+            form={form}
+            name="register"
+            onFinish={onFinish}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 600 }}
+            initialValues={{ remember: true }}
+            autoComplete="off"
+          >
+            {registerField.map((field, i) => (
+              <div key={i}>
+                <FormInput {...field} />
+              </div>
+            ))}
+            <Form.Item>
               <Button type="primary" htmlType="submit">
-                Register
+                Submit
               </Button>
             </Form.Item>
-          </form>
+          </Form>
         </div>
       </div>
     </div>
