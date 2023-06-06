@@ -1,30 +1,24 @@
-import {
-  Button,
-  Dropdown,
-  Form,
-  Input,
-  Select,
-  Space,
-  Upload,
-  UploadFile,
-  message,
-} from "antd";
+import { Button, Form, Input, InputNumber, Select, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-
-const FormInput = (props: any) => {
+import { InputProps } from "../modals/formInputs";
+const FormInput = (props: InputProps) => {
   const {
     name,
     type,
     label,
-    errors,
     placeholder,
     dependencies,
     options,
     className,
+    schema,
+    hasFeedback,
   } = props;
 
-  const [form] = Form.useForm();
-
+  const yupSync = {
+    async validator({ field }: any, value: string) {
+      await schema.validateSyncAt(field, { [field]: value });
+    },
+  };
   const renderField = () => {
     switch (type) {
       case "password":
@@ -33,8 +27,8 @@ const FormInput = (props: any) => {
             className={className}
             name={name}
             label={label}
-            rules={[{ required: true, message: errors?.message }]}
-            hasFeedback
+            rules={[yupSync]}
+            hasFeedback={hasFeedback}
           >
             <Input.Password placeholder={placeholder} />
           </Form.Item>
@@ -46,16 +40,16 @@ const FormInput = (props: any) => {
             className={className}
             name={name}
             label={label}
-            dependencies={[dependencies]}
+            dependencies={[dependencies as string]}
             hasFeedback
             rules={[
-              {
-                required: true,
-                message: errors?.message,
-              },
+              yupSync,
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue(dependencies) === value) {
+                  if (
+                    !value ||
+                    getFieldValue(dependencies as string) === value
+                  ) {
                     return Promise.resolve();
                   }
                   return Promise.reject(
@@ -77,16 +71,7 @@ const FormInput = (props: any) => {
             className={className}
             name={name}
             label={label}
-            rules={[
-              {
-                type: type,
-                message: "The input is not valid E-mail!",
-              },
-              {
-                required: true,
-                message: "Please input your E-mail!",
-              },
-            ]}
+            rules={[yupSync]}
           >
             <Input placeholder={placeholder} />
           </Form.Item>
@@ -95,38 +80,19 @@ const FormInput = (props: any) => {
       case "select":
         return (
           <Form.Item
+            className={className}
             name={name}
             label={label}
-            rules={[{ required: true, message: errors?.message }]}
+            rules={[yupSync]}
           >
-            <select name={name}>
-              {Object.entries(options).map(([key, value]: any, i) => (
-                <option key={i} value={key}>
+            <Select placeholder={placeholder}>
+              {Object.entries(options as object).map(([key, value]: any, i) => (
+                <Select.Option key={i} value={key}>
                   {value}
-                </option>
+                </Select.Option>
               ))}
-            </select>
+            </Select>
           </Form.Item>
-          // <Form.Item
-          //   name={name}
-          //   label={label}
-          //   rules={[{ required: true, message: errors?.message }]}
-          // >
-          //   <Space direction="vertical">
-          //     <Space wrap>
-          //       <Dropdown menu={{ options:any }} placement="bottomLeft">
-          //         <Button>bottomLeft</Button>
-          //       </Dropdown>
-          //     </Space>
-          //   </Space>
-          //   {/* <Select placeholder={placeholder}>
-          //     {Object.entries(options).map(([key, value]: any, i) => (
-          //       <Select.Option key={i} value={key}>
-          //         {value}
-          //       </Select.Option>
-          //     ))}
-          //   </Select> */}
-          // </Form.Item>
         );
 
       case "number":
@@ -135,19 +101,22 @@ const FormInput = (props: any) => {
             className={className}
             name={name}
             label={label}
-            rules={[{ required: true, message: errors?.message }]}
+            rules={[yupSync]}
           >
-            <Input style={{ width: "100%" }} placeholder={placeholder} />
+            <InputNumber
+              placeholder={placeholder}
+              style={{ width: "100%" }}
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={(value): any => value!.replace(/\$\s?|(,*)/g, "")}
+            />
           </Form.Item>
         );
 
       case "textarea":
         return (
-          <Form.Item
-            name={name}
-            label={label}
-            rules={[{ required: true, message: errors?.message }]}
-          >
+          <Form.Item name={name} label={label} rules={[yupSync]}>
             <Input.TextArea
               showCount
               maxLength={100}
@@ -162,7 +131,7 @@ const FormInput = (props: any) => {
             className={className}
             label={label}
             name={name}
-            rules={[{ required: true, message: errors?.message }]}
+            rules={[yupSync]}
           >
             <Input placeholder={placeholder} />
           </Form.Item>
@@ -170,17 +139,13 @@ const FormInput = (props: any) => {
 
       case "file":
         return (
-          <Form.Item
-            label={label}
-            name={name}
-            rules={[{ required: true, message: errors?.message }]}
-          >
+          <Form.Item label={label} name={name} rules={[yupSync]}>
             <Upload
               accept="image/png, image/jpeg , image/jpeg"
               maxCount={1}
               listType="picture"
-              beforeUpload={async (file) => {
-                await file;
+              beforeUpload={(file) => {
+                Promise.resolve(file);
                 return false;
               }}
               multiple={false}
@@ -194,78 +159,7 @@ const FormInput = (props: any) => {
     }
   };
 
-  return <div>{renderField()}</div>;
+  return <div className="fields">{renderField()}</div>;
 };
 
 export default FormInput;
-// import React from "react";
-// import type { MenuProps } from "antd";
-// import { Button, Dropdown, Space } from "antd";
-
-// const items: MenuProps["items"] = [
-//   {
-//     key: "1",
-//     label: (
-//       <a
-//         target="_blank"
-//         rel="noopener noreferrer"
-//         href="https://www.antgroup.com"
-//       >
-//         1st menu item
-//       </a>
-//     ),
-//   },
-//   {
-//     key: "2",
-//     label: (
-//       <a
-//         target="_blank"
-//         rel="noopener noreferrer"
-//         href="https://www.aliyun.com"
-//       >
-//         2nd menu item
-//       </a>
-//     ),
-//   },
-//   {
-//     key: "3",
-//     label: (
-//       <a
-//         target="_blank"
-//         rel="noopener noreferrer"
-//         href="https://www.luohanacademy.com"
-//       >
-//         3rd menu item
-//       </a>
-//     ),
-//   },
-// ];
-
-// const App: React.FC = () => (
-//   <Space direction="vertical">
-//     <Space wrap>
-//       <Dropdown menu={{ items }} placement="bottomLeft">
-//         <Button>bottomLeft</Button>
-//       </Dropdown>
-//       <Dropdown menu={{ items }} placement="bottom">
-//         <Button>bottom</Button>
-//       </Dropdown>
-//       <Dropdown menu={{ items }} placement="bottomRight">
-//         <Button>bottomRight</Button>
-//       </Dropdown>
-//     </Space>
-//     <Space wrap>
-//       <Dropdown menu={{ items }} placement="topLeft">
-//         <Button>topLeft</Button>
-//       </Dropdown>
-//       <Dropdown menu={{ items }} placement="top">
-//         <Button>top</Button>
-//       </Dropdown>
-//       <Dropdown menu={{ items }} placement="topRight">
-//         <Button>topRight</Button>
-//       </Dropdown>
-//     </Space>
-//   </Space>
-// );
-
-// export default App;

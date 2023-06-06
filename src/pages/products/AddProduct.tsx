@@ -3,21 +3,30 @@ import { Link, useNavigate } from "react-router-dom";
 import { productField } from "../../utils/const";
 import FormInput from "../../component/FormInput";
 import { addProduct } from "../../axios/productApi";
+import { addProductSchema } from "../../utils/yupValidation";
+import { useState } from "react";
 
 const AddProduct = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const onFinish = async (data: any) => {
-    const { product_title, product_desc, product_price, product_image } = data;
+    const {
+      product_title,
+      product_desc,
+      product_price,
+      product_category,
+      product_image,
+    } = data;
 
     const res = await addProduct({
       product_desc,
       product_image: product_image.file,
       product_price,
       product_title,
+      product_category,
     });
 
-    res.valid && navigate("/products");
+    res && navigate("/products");
   };
   return (
     <div>
@@ -26,7 +35,9 @@ const AddProduct = () => {
       </div>
       <div className="component">
         <div className="section">
-          <h1>LOGIN</h1>
+          <div className="title">
+            <h1>Add Product</h1>
+          </div>
           <Form
             encType="multipart/form-data"
             form={form}
@@ -40,14 +51,16 @@ const AddProduct = () => {
           >
             {productField.map((field, i) => (
               <div key={i}>
-                <FormInput {...field} />
+                <FormInput {...field} schema={addProductSchema} />
               </div>
             ))}
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Add Product
-              </Button>
-            </Form.Item>
+            <div className="form-btn">
+              <Form.Item>
+                <Button className="button" type="primary" htmlType="submit">
+                  Add Product
+                </Button>
+              </Form.Item>
+            </div>
           </Form>
         </div>
       </div>

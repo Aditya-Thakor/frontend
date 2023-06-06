@@ -16,6 +16,7 @@ export const registerField = [
     type: "password",
     placeholder: "Password",
     label: "Password : ",
+    hasFeedback: true,
   },
   {
     name: "confirm",
@@ -23,6 +24,7 @@ export const registerField = [
     placeholder: "Confirm Password",
     label: "Confirm Password : ",
     dependencies: "password",
+    hasFeedback: true,
   },
 ];
 
@@ -38,6 +40,7 @@ export const loginField = [
     type: "password",
     placeholder: "Password",
     label: "Password : ",
+    hasFeedback: false,
   },
 ];
 
@@ -127,14 +130,17 @@ export const productField = [
   },
 ];
 
-export const tableHeader = {
-  prod_image: "#",
-  prod_qty: "Name",
-  prod_price: "Price",
-};
-
 export const Staticdata = {
   prod_id: 1,
   prod_name: "Clothes",
   prod_price: 20000,
+};
+
+export const tableHeader = {
+  "#": "#",
+  prod_title: "Name",
+  prod_price: "Price",
+  prod_qty: "Quantity",
+  prod_desc: "Description",
+  prod_image: "Product",
 };

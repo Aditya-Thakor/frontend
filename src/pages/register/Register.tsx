@@ -1,27 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
 import { registerField } from "../../utils/const.js";
-import FormInputs from "../../component/FormInputs";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Button, Form } from "antd";
 import { addUser, fetchEmail } from "../../axios/userApi.js";
 import FormInput from "../../component/FormInput.js";
+import { registerInterface } from "../../modals/RegisterInterface.ts";
+import { registerSchema } from "../../utils/yupValidation.ts";
 
-const Register: any = () => {
+const Register = () => {
   const navigate = useNavigate();
 
   const [form] = Form.useForm();
 
-  // const yupSync = {
-  //   async validator({ field }, value) {
-  //     await registerSchema.validateSyncAt(field, { [field]: value });
-  //   },
-  // };
-
-  const onFinish = async (value: any) => {
+  const onFinish = async (value: registerInterface) => {
     const { email } = value;
     const resEmail = await fetchEmail(email);
-
-    console.log(resEmail);
 
     if (resEmail) {
       const response = await addUser(value);
@@ -38,7 +30,9 @@ const Register: any = () => {
       </div>
       <div className="component">
         <div className="section">
-          <h1>REGISTER</h1>
+          <div className="title">
+            <h1>REGISTER</h1>
+          </div>
           <Form
             form={form}
             name="register"
@@ -51,14 +45,16 @@ const Register: any = () => {
           >
             {registerField.map((field, i) => (
               <div key={i}>
-                <FormInput {...field} />
+                <FormInput {...field} schema={registerSchema} />
               </div>
             ))}
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
+            <div className="form-btn">
+              <Form.Item>
+                <Button className="button" type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </Form.Item>
+            </div>
           </Form>
         </div>
       </div>

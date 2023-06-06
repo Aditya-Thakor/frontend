@@ -1,6 +1,5 @@
 import { ChangeEventHandler } from "react";
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
-
+import * as yup from "yup";
 export interface InputProps {
   label?: string;
   name: string;
@@ -9,8 +8,9 @@ export interface InputProps {
   placeholder?: string;
   rows?: number;
   cols?: number;
-  errors?: FieldErrors;
   options?: object;
+  dependencies?: string;
+  schema?: any;
+  hasFeedback?: boolean;
   onchange?: ChangeEventHandler<unknown>;
-  register?: UseFormRegister<FieldValues>;
 }
