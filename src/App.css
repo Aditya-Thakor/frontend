@@ -1,98 +1,9 @@
-.component {
-  display: flex;
-  align-items: center;
-}
-.form-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.section {
-  margin: 0;
-  justify-content: center;
-  align-items: center;
-  width: 1500px;
-}
-.title {
-  margin: 10px 50px 50px;
-  padding-top: 10px;
-  font-size: 16px;
-  color: dodgerblue;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.title h1 {
-  width: 250px;
-  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
-    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-  text-align: center;
-}
-.addtocart {
-  padding: 20px 8px 8px;
-}
-.anchor {
-  font-size: 18px;
-  font-family: sans-serif;
-  margin: 0px 20px;
-  padding: 20px;
-}
-
-.anchor a {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  text-decoration: none;
-  border: 1px;
-  color: white;
-  padding: 5px 40px 8px;
-  background-color: rgb(100, 65, 229);
-}
-.anchor a:hover {
-  color: rgb(255, 255, 255);
-  background-color: rgb(163, 112, 245);
-}
-.show-list {
-  padding: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  width: 99%;
-  gap: 20px;
-}
-
-.qty-field {
-  width: 100px;
-  padding: 10px;
-}
-
-.total-amount {
-  margin: 10px 0px 0px;
-  padding: 10px;
-  text-align: center;
-}
-
-/* Products  */
-.example {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.card-span {
-  margin: 10px 5px 0px;
-  display: flex;
-  font-size: 14px;
-  color: grey;
-  justify-content: space-around;
-}
-.ant-card-meta-title {
-  color: rgb(0, 52, 148) !important;
-  font-size: 20px !important;
-  letter-spacing: 0.3px;
-}
-
 img {
   height: 140px;
   object-fit: contain;
+}
+body a {
+  text-decoration: none;
 }
 
 input[type="date"] {
@@ -100,98 +11,6 @@ input[type="date"] {
   font-family: "Roboto Mono", monospace;
 }
 
-.cart {
-  display: flex;
-  justify-content: end;
-  margin: 10px 80px;
-}
-.cart span {
-  border: 1px solid;
-  padding: 20px;
-}
-
-.cart span:hover {
-  background-color: dodgerblue;
-  color: white;
-  border: 1px solid;
-}
-.cart svg {
-  height: 25px;
-  width: 25px;
-}
-
-table {
-  margin: 30px 0px;
-}
-table a {
-  text-decoration: none;
-}
-
-th {
-  cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px !important;
-  text-align: center !important;
-  vertical-align: middle;
-  font-size: 14px;
-  max-width: 150px;
-  min-width: 150px;
-}
-td {
-  text-align: center;
-  vertical-align: middle;
-  font-size: 18px;
-  max-width: 150px;
-  min-width: 150px;
-}
-td img {
-  height: 80px;
-  width: 120px;
-  border: 2px solid;
-}
-tr {
-  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
-    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px !important;
-}
-.delete {
-  color: red;
-  cursor: pointer;
-}
-td a {
-  margin: 5px;
-}
-
-.table-comp {
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-.head-label {
-  color: rgb(0, 89, 255);
-  margin: 30px 0px 0px;
-  padding: 5px;
-  font-family: "Courier New", Courier, monospace;
-  font-weight: 600;
-  word-spacing: 0.5px;
-}
-.novalidate-field {
-  display: flex;
-  justify-content: flex-start;
-}
-.alignment {
-  display: flex !important;
-  justify-content: center !important;
-}
-.page-item {
-  margin: 10px;
-}
-
-td:has(> .prod-qty) {
-  display: flex;
-  justify-content: center;
-}
-td > .prod-qty {
-  padding-top: 25px;
-  vertical-align: middle;
-  width: 80px;
-}
 .loader {
   position: fixed;
   z-index: 999;
@@ -204,23 +23,19 @@ td > .prod-qty {
   bottom: 0;
   right: 0;
 }
-.navbar {
-  border: 1px solid;
-  display: flex;
-  justify-content: space-around;
-  background-color: black;
-}
 
-.navbar a {
-  text-decoration: none;
-  color: rgb(180, 180, 233);
-}
-
-.navbar a:hover {
-  color: white;
-}
 h4 {
   margin: 50px;
   text-align: center;
   color: rgb(70, 64, 56);
+}
+
+form {
+  align-items: center;
+  align-content: center;
+  padding: 0px 200px 0px !important;
+}
+.form-btn {
+  display: flex;
+  justify-content: center;
 }

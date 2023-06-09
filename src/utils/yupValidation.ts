@@ -17,9 +17,9 @@ export const loginSchema = yup.object().shape({
 });
 
 export const addProductSchema = yup.object().shape({
-  product_title: yup.string().required(),
-  product_desc: yup.string().required(),
-  product_image: yup.mixed().required(),
-  product_category: yup.string().required(),
-  product_price: yup.number().required().min(500).integer().positive(),
+  prod_title: yup.string().required(),
+  prod_desc: yup.string().required(),
+  prod_image: yup.mixed().required(),
+  prod_category: yup.string().required(),
+  prod_price: yup.number().required().min(500).integer().positive(),
 });

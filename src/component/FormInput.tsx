@@ -1,7 +1,16 @@
-import { Button, Form, Input, InputNumber, Select, Upload } from "antd";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Upload,
+} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { InputProps } from "../modals/formInputs";
 import { ObjString } from "../modals/ObjString";
+
 const FormInput = (props: InputProps) => {
   const {
     name,
@@ -10,10 +19,12 @@ const FormInput = (props: InputProps) => {
     placeholder,
     dependencies,
     options,
+    optionsArr,
     className,
     schema,
     hasFeedback,
     defaultValue,
+    filelist,
   } = props;
 
   const yupSync = {
@@ -29,7 +40,7 @@ const FormInput = (props: InputProps) => {
             className={className}
             name={name}
             label={label}
-            rules={[yupSync]}
+            rules={[{ required: true, ...yupSync }]}
             hasFeedback={hasFeedback}
           >
             <Input.Password placeholder={placeholder} />
@@ -45,7 +56,10 @@ const FormInput = (props: InputProps) => {
             dependencies={[dependencies as string]}
             hasFeedback
             rules={[
-              yupSync,
+              {
+                required: true,
+                ...yupSync,
+              },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (
@@ -73,19 +87,35 @@ const FormInput = (props: InputProps) => {
             className={className}
             name={name}
             label={label}
-            rules={[yupSync]}
+            rules={[{ required: true, ...yupSync }]}
           >
             <Input placeholder={placeholder} />
           </Form.Item>
         );
 
+      case "checkbox":
+        return (
+          <Form.Item
+            className={className}
+            name={name}
+            valuePropName="checked"
+            label={label}
+            rules={[{ required: true, message: "Please select a Roles!" }]}
+          >
+            {optionsArr?.map((item: any, i) => (
+              <Checkbox key={i} {...item}>
+                {item.label}
+              </Checkbox>
+            ))}
+          </Form.Item>
+        );
       case "select":
         return (
           <Form.Item
             className={className}
             name={name}
             label={label}
-            rules={[yupSync]}
+            rules={[{ required: true, ...yupSync }]}
           >
             <Select placeholder={placeholder}>
               {Object.entries(options as ObjString).map(([key, value], i) => (
@@ -104,7 +134,7 @@ const FormInput = (props: InputProps) => {
             name={name}
             label={label}
             initialValue={defaultValue}
-            rules={[yupSync]}
+            rules={[{ required: true, ...yupSync }]}
           >
             <InputNumber
               placeholder={placeholder}
@@ -119,7 +149,11 @@ const FormInput = (props: InputProps) => {
 
       case "textarea":
         return (
-          <Form.Item name={name} label={label} rules={[yupSync]}>
+          <Form.Item
+            name={name}
+            label={label}
+            rules={[{ required: true, ...yupSync }]}
+          >
             <Input.TextArea
               showCount
               maxLength={100}
@@ -134,7 +168,7 @@ const FormInput = (props: InputProps) => {
             className={className}
             label={label}
             name={name}
-            rules={[yupSync]}
+            rules={[{ required: true, ...yupSync }]}
           >
             <Input placeholder={placeholder} />
           </Form.Item>
@@ -142,11 +176,16 @@ const FormInput = (props: InputProps) => {
 
       case "file":
         return (
-          <Form.Item label={label} name={name} rules={[yupSync]}>
+          <Form.Item
+            label={label}
+            name={name}
+            rules={[{ required: true, ...yupSync }]}
+          >
             <Upload
               accept="image/png, image/jpeg , image/jpeg"
               maxCount={1}
               listType="picture"
+              defaultFileList={filelist || null}
               beforeUpload={(file) => {
                 Promise.resolve(file);
                 return false;

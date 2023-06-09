@@ -14,7 +14,7 @@ const MainDashBoard = ({ children }: any) => {
             style={{
               padding: 24,
               margin: 0,
-              minHeight: 280,
+              height: 550,
             }}
           >
             {children}

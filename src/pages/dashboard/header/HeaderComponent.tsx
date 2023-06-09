@@ -2,12 +2,7 @@ import { Layout, Menu, MenuProps } from "antd";
 
 const { Header } = Layout;
 
-const items1: MenuProps["items"] = [
-  "Home",
-  "Products",
-  "Category",
-  "Users",
-].map((key) => ({
+const items1: MenuProps["items"] = ["Welcome"].map((key) => ({
   key,
   label: key,
 }));
@@ -19,7 +14,8 @@ const HeaderComponent = () => {
       <Menu
         theme="dark"
         mode="horizontal"
-        defaultSelectedKeys={["Home"]}
+        selectedKeys={["Welcome"]}
+        defaultSelectedKeys={["Dashboard"]}
         items={items1}
       />
     </Header>

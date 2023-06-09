@@ -28,13 +28,6 @@ const Product = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (isToken.token === "" && isToken.role === "") {
-      navigate("/login");
-    }
-    console.log("here in product");
-  }, []);
-
   const onAddtoCart = async (id: number) => {
     const res = await singleProduct(id);
     dispatch(addProductAction(res.data));
@@ -109,7 +102,7 @@ const Product = () => {
             <NavLink to="/dashboard">Dashboard</NavLink>
             <NavLink to="/add-product">Add Product</NavLink>
             <NavLink to="/products">Products</NavLink>
-            <NavLink to="/">Users</NavLink>
+            <NavLink to="/product-list">Product List</NavLink>
             <NavLink to="/register">Register as User</NavLink>
           </>
         )}

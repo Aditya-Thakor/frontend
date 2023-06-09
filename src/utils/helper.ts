@@ -15,3 +15,15 @@ export const setRedirect = (navigate: any, location: any) => {
     role === "admin" ? navigate("/dashboard") : navigate("/products");
   }
 };
+
+export const dateFormatter = (date: Date | string): string => {
+  const dateObj = new Date(date);
+  let getdate: number | string = dateObj.getDate();
+  let month: number | string = dateObj.getMonth();
+  const year = dateObj.getFullYear();
+
+  if (getdate < 10) getdate = "0" + getdate;
+  if (month < 10) month = "0" + month;
+
+  return getdate + "/" + month + "/" + year;
+};

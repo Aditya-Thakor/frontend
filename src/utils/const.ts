@@ -28,6 +28,53 @@ export const registerField = [
   },
 ];
 
+export const adminField = [
+  {
+    name: "username",
+    type: "text",
+    placeholder: "Name",
+    label: "Username : ",
+  },
+  {
+    name: "email",
+    type: "text",
+    placeholder: "Email",
+    label: "Email Address : ",
+  },
+  {
+    name: "roles",
+    type: "checkbox",
+    label: "Roles : ",
+    optionsArr: [
+      {
+        label: "Edit",
+        value: "edit",
+        disabled: false,
+      },
+      {
+        label: "Add",
+        value: "add",
+        disabled: false,
+      },
+      // { defaultChecked: true, label: "View", value: "view", disabled: true },
+    ],
+  },
+  {
+    name: "password",
+    type: "password",
+    placeholder: "Password",
+    label: "Password : ",
+    hasFeedback: true,
+  },
+  {
+    name: "confirm",
+    type: "confirm",
+    placeholder: "Confirm Password",
+    label: "Confirm Password : ",
+    dependencies: "password",
+    hasFeedback: true,
+  },
+];
 export const loginField = [
   {
     name: "email",
@@ -99,31 +146,31 @@ export const catOpt = {
 
 export const productField = [
   {
-    name: "product_title",
+    name: "prod_title",
     type: "text",
     placeholder: "Title",
     label: "Product Title :",
   },
   {
-    name: "product_category",
+    name: "prod_category",
     type: "select",
     placeholder: "Category",
     options: { ...catOpt },
     label: "Product Category :",
   },
   {
-    name: "product_price",
+    name: "prod_price",
     type: "number",
     placeholder: "Price",
     label: "Product Price : ",
   },
   {
-    name: "product_image",
+    name: "prod_image",
     type: "file",
     label: "Product Image : ",
   },
   {
-    name: "product_desc",
+    name: "prod_desc",
     type: "textarea",
     placeholder: "Product Description",
     label: "Product Description : ",

@@ -55,13 +55,13 @@ export const updateProduct = async (data: object) => {
       url: SERVER_URL + "/update-product",
       method: "POST",
       headers: {
-        "content-type": "application/json",
+        "content-type": "multipart/form-data",
       },
       data: { ...data },
     });
 
-    return res.data.valid;
+    return res;
   } catch (error) {
-    console.log("Error While update to product");
+    console.log("Error While add to cart");
   }
 };

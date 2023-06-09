@@ -1,6 +1,18 @@
 import axios from "axios";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
+export const showAdmin = async () => {
+  const res = await axios({
+    url: SERVER_URL + "/show-admin",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return res.data;
+};
+
 export const adminEmail = async (email: string) => {
   try {
     const res = await axios({
