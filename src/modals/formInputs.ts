@@ -9,8 +9,9 @@ export interface InputProps {
   rows?: number;
   cols?: number;
   options?: object;
-  dependencies?: string;
   schema?: any;
+  defaultValue?: number | string;
+  dependencies?: string;
   hasFeedback?: boolean;
   onchange?: ChangeEventHandler<unknown>;
 }

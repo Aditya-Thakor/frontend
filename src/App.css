@@ -14,8 +14,18 @@
   width: 1500px;
 }
 .title {
+  margin: 10px 50px 50px;
+  padding-top: 10px;
+  font-size: 16px;
   color: dodgerblue;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.title h1 {
+  width: 250px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  text-align: center;
 }
 .addtocart {
   padding: 20px 8px 8px;
@@ -24,6 +34,7 @@
   font-size: 18px;
   font-family: sans-serif;
   margin: 0px 20px;
+  padding: 20px;
 }
 
 .anchor a {
@@ -55,12 +66,7 @@
 .total-amount {
   margin: 10px 0px 0px;
   padding: 10px;
-  background-color: #04aa6d;
-  color: white;
   text-align: center;
-}
-.total-amount:hover {
-  background-color: blue;
 }
 
 /* Products  */
@@ -90,12 +96,8 @@ img {
 }
 
 input[type="date"] {
-  padding: 08px;
-  margin: 10px;
+  margin: 30px 0px 10px;
   font-family: "Roboto Mono", monospace;
-  font-size: 18px;
-  background-color: antiquewhite;
-  border-radius: 5px;
 }
 
 .cart {
@@ -131,11 +133,15 @@ th {
   text-align: center !important;
   vertical-align: middle;
   font-size: 14px;
+  max-width: 150px;
+  min-width: 150px;
 }
 td {
   text-align: center;
   vertical-align: middle;
   font-size: 18px;
+  max-width: 150px;
+  min-width: 150px;
 }
 td img {
   height: 80px;
@@ -155,8 +161,6 @@ td a {
 }
 
 .table-comp {
-  padding: 0px 10px 20px;
-  margin: 50px 50px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .head-label {
@@ -187,4 +191,36 @@ td > .prod-qty {
   padding-top: 25px;
   vertical-align: middle;
   width: 80px;
+}
+.loader {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.navbar {
+  border: 1px solid;
+  display: flex;
+  justify-content: space-around;
+  background-color: black;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: rgb(180, 180, 233);
+}
+
+.navbar a:hover {
+  color: white;
+}
+h4 {
+  margin: 50px;
+  text-align: center;
+  color: rgb(70, 64, 56);
 }

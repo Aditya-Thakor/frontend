@@ -7,15 +7,19 @@ import {
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import tokenSlice from "./slices/tokenSlice";
+import productSlice from "./slices/productSlice";
+import offerSlice from "./slices/offerSlice";
 
 const persistConfig = {
-  key: "token",
+  key: "task",
   storage,
   version: 1,
 };
 
 const rootReducer = combineReducers({
-  token: tokenSlice,
+  authToken: tokenSlice,
+  cartproduct: productSlice,
+  offerstate: offerSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

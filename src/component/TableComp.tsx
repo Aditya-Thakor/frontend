@@ -1,17 +1,27 @@
 import { useEffect, useState } from "react";
 import FormInput from "./FormInput";
+import { ProductInterface } from "../modals/ProductInterface";
+import * as yup from "yup";
+import { Form } from "antd";
+
 const IMAGE_URL = import.meta.env.VITE_IMAGE_URL;
 
-const TableComp = (props: any) => {
-  const { data, tableHeader } = props;
+type Props = {
+  data: ProductInterface[];
+  qty?: number;
+};
+const TableComp = (props: Props) => {
+  const priceSchema = yup.object().shape({
+    qty: yup.number().required().integer().min(1).max(10),
+  });
+
+  const { data, qty } = props;
 
   const [dataset, setDataset] = useState(data);
 
-  const [total, setTotal] = useState();
-
   useEffect(() => {
-    data.map((item: any) => {
-      console.log(item.prod_price * qty);
+    data.map((item) => {
+      // console.log(item.prod_price * 5);
     });
   }, []);
 
@@ -27,30 +37,26 @@ const TableComp = (props: any) => {
           /> */}
         </div>
       </div>
-      {dataset && dataset.length > 0 ? (
-        <div>
-          <table className="table table-borderless">
-            <thead>
-              <tr>
-                {Object.keys(tableHeader).map((item, index) => (
-                  <th id={item} key={index}>
-                    {item}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-
+      <div>
+        <table className="table table-borderless">
+          {dataset && dataset.length > 0 ? (
             <tbody>
-              {dataset.map((item: any, i: any) => (
+              {dataset.map((item, i) => (
                 <tr key={i}>
-                  <td>{i + 1}</td>
+                  <td>{item.prod_id}</td>
                   <td>{item["prod_title"]}</td>
                   <td>₹{item["prod_price"]}</td>
                   <td>
                     <div className="prod-qty">
-                      <FormInput type="number" name="qty" />
+                      <Form>
+                        <FormInput
+                          schema={priceSchema}
+                          defaultValue={qty}
+                          type="number"
+                          name="qty"
+                        />
+                      </Form>
                     </div>
-                    {item["prod_qty"]}
                   </td>
                   <td>{item["prod_desc"]}</td>
                   <td>
@@ -59,13 +65,15 @@ const TableComp = (props: any) => {
                 </tr>
               ))}
             </tbody>
-          </table>
-        </div>
-      ) : (
-        <nav className="navbar navbar-light bg-light alignment">
-          <span className="navbar-text">No data</span>
-        </nav>
-      )}
+          ) : (
+            <tbody>
+              <nav className="navbar navbar-light bg-light alignment">
+                <span className="navbar-text">No data</span>
+              </nav>
+            </tbody>
+          )}
+        </table>
+      </div>
     </div>
   );
 };

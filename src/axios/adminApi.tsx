@@ -1,10 +1,10 @@
 import axios from "axios";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
-export const fetchEmail = async (email: string) => {
+export const adminEmail = async (email: string) => {
   try {
     const res = await axios({
-      url: SERVER_URL + "/validate-email",
+      url: SERVER_URL + "/email-admin",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -18,17 +18,16 @@ export const fetchEmail = async (email: string) => {
   }
 };
 
-export const addUser = async (data: object) => {
+export const addAdmin = async (data: object) => {
   try {
     const res = await axios({
-      url: SERVER_URL + "/add-user",
+      url: SERVER_URL + "/add-admin",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       data: { ...data },
     });
-    console.log(res);
 
     return res.data.status;
   } catch (error) {
@@ -36,17 +35,16 @@ export const addUser = async (data: object) => {
   }
 };
 
-export const validateUser = async (data: object) => {
+export const validateAdmin = async (data: object) => {
   try {
     const res = await axios({
-      url: SERVER_URL + "/validate-user",
+      url: SERVER_URL + "/validate-admin",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       data: { ...data },
     });
-
     return res.data;
   } catch (error: unknown) {
     console.log("Error in Validate user");

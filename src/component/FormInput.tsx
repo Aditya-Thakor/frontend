@@ -1,6 +1,7 @@
 import { Button, Form, Input, InputNumber, Select, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { InputProps } from "../modals/formInputs";
+import { ObjString } from "../modals/ObjString";
 const FormInput = (props: InputProps) => {
   const {
     name,
@@ -12,10 +13,11 @@ const FormInput = (props: InputProps) => {
     className,
     schema,
     hasFeedback,
+    defaultValue,
   } = props;
 
   const yupSync = {
-    async validator({ field }: any, value: string) {
+    async validator({ field }: ObjString, value: string) {
       await schema.validateSyncAt(field, { [field]: value });
     },
   };
@@ -86,7 +88,7 @@ const FormInput = (props: InputProps) => {
             rules={[yupSync]}
           >
             <Select placeholder={placeholder}>
-              {Object.entries(options as object).map(([key, value]: any, i) => (
+              {Object.entries(options as ObjString).map(([key, value], i) => (
                 <Select.Option key={i} value={key}>
                   {value}
                 </Select.Option>
@@ -101,6 +103,7 @@ const FormInput = (props: InputProps) => {
             className={className}
             name={name}
             label={label}
+            initialValue={defaultValue}
             rules={[yupSync]}
           >
             <InputNumber
@@ -109,7 +112,7 @@ const FormInput = (props: InputProps) => {
               formatter={(value) =>
                 `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
               }
-              parser={(value): any => value!.replace(/\$\s?|(,*)/g, "")}
+              parser={(value) => value!.replace(/\$\s?|(,*)/g, "")}
             />
           </Form.Item>
         );

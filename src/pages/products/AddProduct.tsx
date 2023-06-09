@@ -1,15 +1,28 @@
 import { Button, Form } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { productField } from "../../utils/const";
 import FormInput from "../../component/FormInput";
 import { addProduct } from "../../axios/productApi";
 import { addProductSchema } from "../../utils/yupValidation";
-import { useState } from "react";
+
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+
+type data = {
+  product_title: string;
+  product_desc: string;
+  product_price: number;
+  product_category: string;
+  product_image: FileList | string | File | any;
+};
 
 const AddProduct = () => {
-  const [form] = Form.useForm();
+  const isToken = useSelector((state: any) => state.authToken);
   const navigate = useNavigate();
-  const onFinish = async (data: any) => {
+
+  const [form] = Form.useForm();
+
+  const onFinish = async (data: data) => {
     const {
       product_title,
       product_desc,
@@ -30,8 +43,12 @@ const AddProduct = () => {
   };
   return (
     <div>
-      <div className="anchor">
-        <Link to="/products">Products</Link>
+      <div className="navbar">
+        <NavLink to="/dashboard">Dashboard</NavLink>
+        <NavLink to="/add-product">Add Product</NavLink>
+        <NavLink to="/products">Products</NavLink>
+        <NavLink to="/">Users</NavLink>
+        <NavLink to="/register">Register as User</NavLink>
       </div>
       <div className="component">
         <div className="section">
