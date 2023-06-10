@@ -9,6 +9,8 @@ const AuthGuard = () => {
 
   useEffect(() => {
     const path = location.pathname.includes("/register");
+    // const paths = ["/register", "/login"];
+
     if (role === "") {
       path ? navigate("/register") : navigate("/login");
     } else if (role.length > 0) {

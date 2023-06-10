@@ -9,6 +9,7 @@ import routes from "./path";
 import Loading from "../component/common/Suspense";
 import AuthGuard from "../guard/AuthGuard";
 import { getTokenDetails } from "../utils/helper";
+import { adminEmail } from "../axios/adminApi";
 
 const Login = lazy(() => import("../pages/login/Login"));
 const Register = lazy(() => import("../pages/register/Register"));
@@ -31,17 +32,10 @@ const ReactRoutes = () => {
           <Route
             key={i}
             path={route.path}
-            element={
-              route.role === "admin" ? (
-                <Loading Children={route.component} />
-              ) : (
-                <Loading Children={route.component} />
-              )
-            }
+            element={<Loading Children={route.component} />}
           />
         ))}
       </Routes>
-      {/* <AuthGuard role={role} /> */}
     </>
   );
 };

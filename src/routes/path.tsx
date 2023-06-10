@@ -8,6 +8,7 @@ const ProductList = lazy(() => import("../pages/products/ProductList"));
 // admin
 const AdminList = lazy(() => import("../pages/admin/AdminList"));
 const AddAdmin = lazy(() => import("../pages/admin/AddAdmin"));
+
 const routes = [
   {
     path: "/dashboard",
@@ -22,7 +23,7 @@ const routes = [
   {
     path: "/view-product",
     component: AddProduct,
-    role: "admin",
+    role: "user",
   },
   {
     path: "/cart",

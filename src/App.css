@@ -26,6 +26,7 @@ input[type="date"] {
 
 h4 {
   margin: 50px;
+  text-transform: capitalize;
   text-align: center;
   color: rgb(70, 64, 56);
 }

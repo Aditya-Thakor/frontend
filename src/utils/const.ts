@@ -56,7 +56,7 @@ export const adminField = [
         value: "add",
         disabled: false,
       },
-      // { defaultChecked: true, label: "View", value: "view", disabled: true },
+      // { checked: true, label: "View", value: "view", disabled: true },
     ],
   },
   {

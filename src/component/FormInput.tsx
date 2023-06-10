@@ -25,6 +25,8 @@ const FormInput = (props: InputProps) => {
     hasFeedback,
     defaultValue,
     filelist,
+    checkList,
+    disabled,
   } = props;
 
   const yupSync = {
@@ -96,17 +98,16 @@ const FormInput = (props: InputProps) => {
       case "checkbox":
         return (
           <Form.Item
-            className={className}
+            label={label}
             name={name}
             valuePropName="checked"
-            label={label}
             rules={[{ required: true, message: "Please select a Roles!" }]}
           >
-            {optionsArr?.map((item: any, i) => (
-              <Checkbox key={i} {...item}>
-                {item.label}
-              </Checkbox>
-            ))}
+            <Checkbox.Group
+              options={optionsArr}
+              disabled={disabled}
+              defaultValue={checkList}
+            />
           </Form.Item>
         );
       case "select":

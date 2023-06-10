@@ -1,6 +1,7 @@
-import { UploadFile } from "antd";
+import { CheckboxOptionType, UploadFile } from "antd";
+import { CheckboxValueType } from "antd/es/checkbox/Group";
 import { ChangeEventHandler } from "react";
-import * as yup from "yup";
+
 export interface InputProps {
   label?: string;
   name: string;
@@ -10,11 +11,13 @@ export interface InputProps {
   rows?: number;
   cols?: number;
   options?: object;
-  optionsArr?: object[];
+  optionsArr?: CheckboxOptionType[];
   schema?: any;
   defaultValue?: number | string;
   dependencies?: string;
+  checkList?: CheckboxValueType[];
   hasFeedback?: boolean;
+  disabled?: boolean;
   filelist?: UploadFile[] | any;
   onchange?: ChangeEventHandler<unknown>;
 }

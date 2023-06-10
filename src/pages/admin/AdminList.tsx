@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { showAdmin } from "../../axios/adminApi";
+import { deleteAdmin, showAdmin } from "../../axios/adminApi";
 import DataTable from "../../component/common/DataTable";
 import { Space } from "antd";
 import { Link } from "react-router-dom";
@@ -13,6 +13,7 @@ interface DataType {
   createdAt: Date | string;
   updatedAt: Date | string;
   id: number | string;
+  admin_roles: any;
 }
 const adminHeader: ColumnsType<DataType> = [
   {
@@ -32,7 +33,7 @@ const adminHeader: ColumnsType<DataType> = [
   },
   {
     title: "Role",
-    dataIndex: "admin_role",
+    dataIndex: "admin_roles",
     key: "admin_role",
   },
   {
@@ -51,7 +52,9 @@ const adminHeader: ColumnsType<DataType> = [
         <Link to={"/admin/edit-admin?admin_id=" + data.id + "&&mode=edit"}>
           Edit
         </Link>
-        <Link to={"/admin"}>Delete</Link>
+        <Link to={"/admin"} onClick={() => deleteAdmin(data.id as number)}>
+          Delete
+        </Link>
       </Space>
     ),
   },
@@ -63,13 +66,12 @@ const AdminList = () => {
   const listAdmin = async () => {
     const res = await showAdmin();
     const { data }: any = res;
-    // dateFormatter()
-
     const arr = data.map((item: DataType, i: number) => {
       const date = dateFormatter(item.createdAt);
+      console.log(item.admin_roles);
+
       return { ...item, createdAt: date };
     });
-
     setAdminData(() => arr);
   };
 

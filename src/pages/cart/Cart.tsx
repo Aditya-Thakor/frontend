@@ -18,14 +18,6 @@ const Cart = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isToken.token === "" && isToken.role === "") {
-      navigate("/login");
-    } else if (isToken.role === "admin") {
-      navigate("/dashboard");
-    }
-  }, []);
-
-  useEffect(() => {
     cartProduct.reduce((groups: ObjString, product: ObjString) => {
       groups[product["prod_id"]] = groups[product["prod_id"]] ?? [];
       groups[product["prod_id"]].push(product);

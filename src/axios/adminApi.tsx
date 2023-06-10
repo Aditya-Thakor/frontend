@@ -9,11 +9,10 @@ export const showAdmin = async () => {
       "Content-Type": "application/json",
     },
   });
-
   return res.data;
 };
 
-export const adminEmail = async (email: string) => {
+export const adminEmail = async (data: object) => {
   try {
     const res = await axios({
       url: SERVER_URL + "/email-admin",
@@ -21,12 +20,30 @@ export const adminEmail = async (email: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-      data: { email },
+      data: { data },
     });
+    console.log(res);
 
     return res.data.valid;
   } catch (error) {
     console.log("Error While Validate User");
+  }
+};
+
+export const singleAdmin = async (id: number | string) => {
+  try {
+    const res = await axios({
+      url: SERVER_URL + "/single-admin",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: { id },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log("Error While add to cart");
   }
 };
 
@@ -41,9 +58,43 @@ export const addAdmin = async (data: object) => {
       data: { ...data },
     });
 
-    return res.data.status;
+    return res.data.valid;
   } catch (error) {
     console.log("Error in adduser");
+  }
+};
+
+export const updateAdmin = async (data: any) => {
+  try {
+    const res = await axios({
+      url: SERVER_URL + "/update-admin",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: { ...data },
+    });
+
+    return res;
+  } catch (error) {
+    console.log("Error While add to cart");
+  }
+};
+
+export const deleteAdmin = async (id: number) => {
+  try {
+    const res = await axios({
+      url: SERVER_URL + "/delete-admin",
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      data: { id },
+    });
+
+    return res.data.valid;
+  } catch (error) {
+    console.log("Error While delete product");
   }
 };
 

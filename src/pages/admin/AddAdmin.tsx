@@ -1,53 +1,86 @@
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { adminField } from "../../utils/const.js";
-import { Button, Form } from "antd";
+import { message, Form, Button } from "antd";
 import FormInput from "../../component/FormInput.js";
 import { registerSchema } from "../../utils/yupValidation.ts";
-import { getTokenDetails } from "../../utils/helper.ts";
 import { useEffect, useState } from "react";
+import { adminEmail, singleAdmin, updateAdmin } from "../../axios/adminApi.tsx";
+import { addAdmin } from "../../axios/adminApi.tsx";
+import { CheckboxValueType } from "antd/es/checkbox/Group";
 
 const AddAdmin = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { role } = getTokenDetails();
   const [searchParams, setSearchParams] = useSearchParams();
-  const prod_id = searchParams.get("admin_id");
+  const admin_id = searchParams.get("admin_id");
   const mode = searchParams.get("mode");
-
   const [formMode, setFormMode] = useState<boolean>(false);
-
   const [form] = Form.useForm();
+  const [requestedData, setRequestedData] = useState<any>();
+  const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
-    mode === "view" && setFormMode(true);
-  }, []);
-  const onFinish = async (data: any) => {
-    // const { email } = value;
-    // if (location.pathname.includes("/admin")) {
-    //   const resEmail = await adminEmail(email);
-    //   if (resEmail) {
-    //     const response = await addAdmin(value);
-    //     if (response) navigate("/admin/login");
-    //   } else {
-    //     form.setFields([{ name: "email", errors: ["email already used"] }]);
-    //   }
-    // } else {
-    //   const resEmail = await fetchEmail(email);
-    //   if (resEmail) {
-    //     const response = await addUser(value);
-    //     if (response) navigate("/login");
-    //   } else {
-    //     form.setFields([{ name: "email", errors: ["email already used"] }]);
-    //   }
-    // }
+  const fetchAdmin = async (admin_id: number | string) => {
+    const res = await singleAdmin(admin_id);
+    const data = res.data;
+    setRequestedData({
+      username: data.admin_name,
+      email: data.admin_email,
+      roles: data.admin_roles.split(","),
+    });
   };
 
+  useEffect(() => {
+    mode === "view" ? setFormMode(true) : setFormMode(false);
+    admin_id && fetchAdmin(admin_id);
+  }, [mode, admin_id]);
+
+  const [messageApi, contextHolder] = message.useMessage();
+  const success = (message: string) => {
+    messageApi.open({
+      type: "success",
+      content: message,
+    });
+    return true;
+  };
+  const error = () => {
+    messageApi.open({
+      type: "error",
+      content: "This is an error message",
+    });
+  };
+  const onFinish = async (data: any) => {
+    const { email } = data;
+    let res;
+    if (!admin_id && !mode) {
+      await adminEmail({ admin_email: email });
+      success("Admin Added");
+      res = await addAdmin(data);
+    } else {
+      await adminEmail({ admin_email: email, id: admin_id });
+      res =
+        admin_id &&
+        requestedData &&
+        (await updateAdmin({
+          ...data,
+          id: admin_id,
+          original_email: requestedData.email,
+        }));
+    }
+
+    res
+      ? navigate("/admin")
+      : form.setFields([{ name: "email", errors: ["email already used"] }]);
+  };
+
+  admin_id && mode
+    ? form.setFieldsValue({ ...requestedData })
+    : form.resetFields();
   return (
     <div>
+      {contextHolder}
       <div className="component">
         <div className="section">
           <div className="path-label">
-            <h4>Add Admin</h4>
+            <h4>{mode ? mode + " Admin" : "Add Admin"}</h4>
           </div>
 
           <Form
@@ -56,22 +89,67 @@ const AddAdmin = () => {
             onFinish={onFinish}
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
+            initialValues={mode && requestedData}
             autoComplete="off"
             disabled={formMode}
           >
             {adminField.map((field, i) => (
               <div key={i}>
-                <FormInput {...field} schema={registerSchema} />
+                {mode === "edit" || mode === "view" ? (
+                  field.name !== "password" &&
+                  field.name !== "confirm" &&
+                  requestedData &&
+                  mode && (
+                    <FormInput
+                      {...field}
+                      schema={registerSchema}
+                      checkList={
+                        requestedData &&
+                        (requestedData.roles as CheckboxValueType[])
+                      }
+                      disabled={mode === "view" && true}
+                    />
+                  )
+                ) : (
+                  <FormInput {...field} schema={registerSchema} />
+                )}
               </div>
             ))}
-            <div className="form-btn">
-              <Form.Item>
-                <Button className="button" type="primary" htmlType="submit">
-                  Submit
+
+            {mode === "edit" && (
+              <Form.Item label="Change Password">
+                <Button
+                  className="button"
+                  type="dashed"
+                  htmlType="button"
+                  onClick={() =>
+                    showPassword
+                      ? setShowPassword(false)
+                      : setShowPassword(true)
+                  }
+                >
+                  Change Password
                 </Button>
               </Form.Item>
-            </div>
+            )}
+            {admin_id && showPassword && (
+              <FormInput
+                label="Change Password"
+                type="password"
+                name="password"
+                placeholder="Change Password"
+                schema={registerSchema}
+              />
+            )}
+            {mode !== "view" && (
+              <div className="form-btn">
+                <Form.Item>
+                  <Button className="button" type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                </Form.Item>
+              </div>
+            )}
           </Form>
         </div>
       </div>
