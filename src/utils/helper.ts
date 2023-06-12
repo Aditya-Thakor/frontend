@@ -27,3 +27,9 @@ export const dateFormatter = (date: Date | string): string => {
 
   return getdate + "/" + month + "/" + year;
 };
+
+export const getRolePermission = () => {
+  const { rolestate } = store.getState();
+
+  return rolestate;
+};

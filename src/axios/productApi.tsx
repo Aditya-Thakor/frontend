@@ -53,7 +53,7 @@ export const updateProduct = async (data: object) => {
   try {
     const res = await axios({
       url: SERVER_URL + "/update-product",
-      method: "POST",
+      method: "PUT",
       headers: {
         "content-type": "multipart/form-data",
       },

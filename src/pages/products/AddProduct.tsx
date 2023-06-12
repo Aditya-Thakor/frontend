@@ -1,16 +1,12 @@
-import { Button, Form } from "antd";
-import {
-  NavLink,
-  Outlet,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Button, Form, message } from "antd";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { productField } from "../../utils/const";
 import FormInput from "../../component/FormInput";
 import { addProduct, updateProduct } from "../../axios/productApi";
 import { addProductSchema } from "../../utils/yupValidation";
 import { useEffect, useState } from "react";
 import { singleProduct } from "../../axios/cartApi";
+import { useSelector } from "react-redux";
 const IMAGE_URL = import.meta.env.VITE_IMAGE_URL;
 
 type Data = {
@@ -25,37 +21,75 @@ type Data = {
   updatedAt?: Date | string;
 };
 
-const initialValues = {
-  prod_title: "",
-  prod_desc: "",
-  prod_price: 0,
-  prod_category: "",
-  prod_image: "",
-};
-
 const AddProduct = () => {
   const navigate = useNavigate();
-
-  const [isRequestedData, setIsRequestedData] = useState<Data>(initialValues);
+  const { prod_id, mode } = useParams();
+  const location = useLocation();
+  const { permission } = useSelector((state: any) => state.rolestate);
   const [form] = Form.useForm();
+  const [formDisable, setFormDisable] = useState<boolean>(false);
+  const [formMode, setFormMode] = useState(mode);
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const prod_id = searchParams.get("prod_id");
-  const mode = searchParams.get("mode");
-  const [formMode, setFormMode] = useState<boolean>(false);
+  const [messageApi, contextHolder] = message.useMessage();
+  const [isRequestedData, setIsRequestedData] = useState<any>({});
 
-  const getSingleProductData = async (id: number | string) => {
-    const res = await singleProduct(id as number);
-    setIsRequestedData({ ...res.data, prod_image: "", prod_img_name: "" });
+  const success = (message: string) => {
+    messageApi.open({
+      type: "success",
+      content: message,
+    });
+    return true;
   };
 
   useEffect(() => {
-    prod_id && getSingleProductData(prod_id);
-    mode === "view" && setFormMode(true);
+    if (mode?.includes("add")) {
+      setFormMode("add");
+    }
   }, []);
+
+  const getSingleProductData = async (id: string) => {
+    const res = await singleProduct(id);
+    res.valid ? setIsRequestedData({ ...res.data }) : navigate("/products");
+  };
+
+  useEffect(() => {
+    if (mode === "edit" && prod_id) {
+      prod_id && getSingleProductData(prod_id);
+      setFormMode("edit");
+    } else if (location.pathname.includes("add-product") && prod_id) {
+      navigate("/products/add-product");
+    } else if (prod_id && !mode) {
+      prod_id && getSingleProductData(prod_id);
+      setFormDisable(true);
+      setFormMode("view");
+    } else {
+      setFormDisable(false);
+    }
+  }, [prod_id, mode]);
+
+  useEffect(() => {
+    if (mode !== "add" && prod_id) {
+      prod_id && getSingleProductData(prod_id);
+    }
+
+    if (!formMode && prod_id) {
+      setFormDisable(true);
+    } else if (
+      mode !== "view" &&
+      permission.includes("edit") &&
+      permission.includes("add")
+    ) {
+      prod_id && getSingleProductData(prod_id);
+    } else if (mode !== "edit" && permission.includes("edit")) {
+      navigate("/products");
+    } else if (mode === "edit" && permission.includes("add")) {
+      navigate("/products");
+    }
+  }, [permission, mode]);
 
   const onFinish = async (data: Data) => {
     const { prod_image } = data;
+
     let res;
     if (prod_id) {
       res = await updateProduct({
@@ -70,6 +104,7 @@ const AddProduct = () => {
   };
 
   // Intials
+
   const filelist = [
     {
       uid: prod_id || "1",
@@ -79,37 +114,28 @@ const AddProduct = () => {
     },
   ];
 
-  console.log(isRequestedData);
-
-  prod_id ? form.setFieldsValue({ ...isRequestedData }) : form.resetFields();
-
+  prod_id && isRequestedData
+    ? form.setFieldsValue({ ...isRequestedData })
+    : form.resetFields();
   return (
     <div>
-      <Outlet />
-      <div className="navbar">
-        <NavLink to="/dashboard">Dashboard</NavLink>
-        <NavLink to="/add-product">Add Product</NavLink>
-        <NavLink to="/products">Products</NavLink>
-        <NavLink to="/product-list">Product List</NavLink>
-
-        <NavLink to="/register">Register as User</NavLink>
-      </div>
+      {contextHolder}
       <div className="component">
         <div className="section">
-          <div className="title">
-            <h1>{mode} Product</h1>
+          <div className="path-label">
+            <h4>{formMode ? formMode + " Product" : "Add Product"}</h4>
           </div>
+
           <Form
-            encType="multipart/form-data"
             form={form}
-            name="login"
+            name="add-product"
             onFinish={onFinish}
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
-            style={{ maxWidth: 600 }}
-            initialValues={{ remember: true }}
+            encType="multipart/form-data"
             autoComplete="off"
-            disabled={formMode}
+            disabled={formDisable}
+            initialValues={{ remember: true }}
           >
             {productField.map((field, i) => (
               <div key={i}>
@@ -125,7 +151,7 @@ const AddProduct = () => {
               <div className="form-btn">
                 <Form.Item>
                   <Button className="button" type="primary" htmlType="submit">
-                    {mode} Product
+                    {formMode ? formMode + " Product" : "Add Product"}
                   </Button>
                 </Form.Item>
               </div>

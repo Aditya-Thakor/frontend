@@ -75,6 +75,7 @@ export const adminField = [
     hasFeedback: true,
   },
 ];
+
 export const loginField = [
   {
     name: "email",

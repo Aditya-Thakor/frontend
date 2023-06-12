@@ -1,15 +1,14 @@
 import axios from "axios";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
-export const singleProduct = async (id: number) => {
+export const singleProduct = async (id: string) => {
   try {
     const res = await axios({
-      url: SERVER_URL + "/single-product",
-      method: "POST",
+      url: SERVER_URL + "/single-product/" + id,
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      data: { prod_id: id },
     });
 
     return res.data;

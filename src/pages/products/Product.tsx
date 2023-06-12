@@ -1,6 +1,6 @@
 import { Button, Card, Form, Spin, Modal } from "antd";
 import Meta from "antd/es/card/Meta";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { singleProduct } from "../../axios/cartApi";
 import { viewProducts } from "../../axios/productApi";
 import { Suspense, useEffect, useState } from "react";
@@ -28,7 +28,7 @@ const Product = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const onAddtoCart = async (id: number) => {
+  const onAddtoCart = async (id: any) => {
     const res = await singleProduct(id);
     dispatch(addProductAction(res.data));
     res.valid && navigate("/cart");

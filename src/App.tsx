@@ -9,7 +9,7 @@ const App = () => {
   return (
     <Router>
       <MainDashBoard>
-        <AuthGuard />
+        {/* <AuthGuard /> */}
         <Routes />
       </MainDashBoard>
     </Router>

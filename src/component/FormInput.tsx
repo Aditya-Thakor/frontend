@@ -34,6 +34,7 @@ const FormInput = (props: InputProps) => {
       await schema.validateSyncAt(field, { [field]: value });
     },
   };
+
   const renderField = () => {
     switch (type) {
       case "password":

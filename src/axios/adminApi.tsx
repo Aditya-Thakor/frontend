@@ -22,7 +22,6 @@ export const adminEmail = async (data: object) => {
       },
       data: { data },
     });
-    console.log(res);
 
     return res.data.valid;
   } catch (error) {
@@ -68,7 +67,7 @@ export const updateAdmin = async (data: any) => {
   try {
     const res = await axios({
       url: SERVER_URL + "/update-admin",
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -85,7 +84,7 @@ export const deleteAdmin = async (id: number) => {
   try {
     const res = await axios({
       url: SERVER_URL + "/delete-admin",
-      method: "POST",
+      method: "DELETE",
       headers: {
         "content-type": "application/json",
       },

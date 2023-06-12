@@ -49,28 +49,28 @@ const AddAdmin = () => {
   };
   const onFinish = async (data: any) => {
     const { email } = data;
-    let res;
     if (!admin_id && !mode) {
-      await adminEmail({ admin_email: email });
-      success("Admin Added");
-      res = await addAdmin(data);
+      const res = await adminEmail({ admin_email: email });
+      if (res) {
+        success("Admin Added");
+        await addAdmin(data);
+        navigate("/admin");
+      }
     } else {
-      await adminEmail({ admin_email: email, id: admin_id });
-      res =
+      const res = await adminEmail({ admin_email: email, id: admin_id });
+      if (res) {
         admin_id &&
-        requestedData &&
-        (await updateAdmin({
-          ...data,
-          id: admin_id,
-          original_email: requestedData.email,
-        }));
+          requestedData &&
+          (await updateAdmin({
+            ...data,
+            id: admin_id,
+            original_email: requestedData.email,
+          }));
+        navigate("/admin");
+      }
     }
-
-    res
-      ? navigate("/admin")
-      : form.setFields([{ name: "email", errors: ["email already used"] }]);
+    form.setFields([{ name: "email", errors: ["email already used"] }]);
   };
-
   admin_id && mode
     ? form.setFieldsValue({ ...requestedData })
     : form.resetFields();

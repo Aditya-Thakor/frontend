@@ -35,11 +35,6 @@ const routes = [
     component: ProductList,
     role: "admin",
   },
-  {
-    path: "/products",
-    component: Product,
-    role: ["admin", "user"],
-  },
 
   // Admin Route
 
@@ -58,6 +53,30 @@ const routes = [
     component: AddAdmin,
     role: "admin",
   },
+
+  // product
+  {
+    path: "/products/:mode/:prod_id",
+    component: AddProduct,
+    role: "admin",
+  },
+  {
+    path: "/products/add-product",
+    component: AddProduct,
+    role: "admin",
+  },
+  {
+    path: "/products/:prod_id",
+    component: AddProduct,
+    role: "admin",
+  },
+  {
+    path: "/products",
+    component: ProductList,
+    role: "admin",
+  },
+
+  // products
 ];
 
 export default routes;

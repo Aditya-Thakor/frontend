@@ -68,8 +68,6 @@ const AdminList = () => {
     const { data }: any = res;
     const arr = data.map((item: DataType, i: number) => {
       const date = dateFormatter(item.createdAt);
-      console.log(item.admin_roles);
-
       return { ...item, createdAt: date };
     });
     setAdminData(() => arr);
